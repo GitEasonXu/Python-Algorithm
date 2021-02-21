@@ -3,7 +3,7 @@
 '''
 Author: Len-xu
 Date: 2021-02-21 13:27:40
-LastEditTime: 2021-02-21 13:49:17
+LastEditTime: 2021-02-21 14:04:07
 LastEditors: Do not edit
 FilePath: \Python-Algorithm\设计模式\abstract_factory.py
 Description: 
@@ -37,16 +37,6 @@ class PhoneFactory(metaclass=ABCMeta):
     @abstractmethod
     def make_os(self):
         pass
-
-    def make_build(self):
-        self.shell = self.make_shell()
-        self.cpu = self.make_cpu()
-        self.os = self.make_os()
-    
-    def show_info(self):
-        self.shell.show_shell()
-        self.cpu.show_cpu()
-        self.os.show_os()
 
 #具体产品角色
 class SmallShell(PhoneShell):
@@ -99,6 +89,24 @@ class AppleFactory(PhoneFactory):
     def make_os(self):
         return IOS()
 
-pf = AppleFactory()
-pf.make_build()
-pf.show_info()
+# 客户端
+class Phone:
+    def __init__(self, shell, cpu, os) -> None:
+        self.shell = shell
+        self.cpu = cpu
+        self.os = os
+    
+    def show_info(self):
+        self.shell.show_shell()
+        self.cpu.show_cpu()
+        self.os.show_os()
+
+def make_phone(phone_factory):
+    shell = phone_factory.make_shell()
+    cpu = phone_factory.make_cpu()
+    os = phone_factory.make_os()
+    return Phone(shell, cpu, os)
+
+    
+phone = make_phone(AppleFactory())
+phone.show_info()
